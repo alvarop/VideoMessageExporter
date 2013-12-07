@@ -18,6 +18,7 @@
 		38A6CC811853815D00D19E3D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC601853815D00D19E3D /* Cocoa.framework */; };
 		38A6CC891853815D00D19E3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC871853815D00D19E3D /* InfoPlist.strings */; };
 		38A6CC8B1853815D00D19E3D /* VideoMessageExporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A6CC8A1853815D00D19E3D /* VideoMessageExporterTests.m */; };
+		38A6CC95185381AA00D19E3D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC94185381AA00D19E3D /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		38A6CC861853815D00D19E3D /* VideoMessageExporterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VideoMessageExporterTests-Info.plist"; sourceTree = "<group>"; };
 		38A6CC881853815D00D19E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38A6CC8A1853815D00D19E3D /* VideoMessageExporterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoMessageExporterTests.m; sourceTree = "<group>"; };
+		38A6CC94185381AA00D19E3D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38A6CC95185381AA00D19E3D /* libsqlite3.dylib in Frameworks */,
 				38A6CC611853815D00D19E3D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +98,7 @@
 		38A6CC5F1853815D00D19E3D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				38A6CC94185381AA00D19E3D /* libsqlite3.dylib */,
 				38A6CC601853815D00D19E3D /* Cocoa.framework */,
 				38A6CC7F1853815D00D19E3D /* XCTest.framework */,
 				38A6CC621853815D00D19E3D /* Other Frameworks */,
