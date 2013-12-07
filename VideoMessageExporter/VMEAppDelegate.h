@@ -12,6 +12,6 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
-- (void)testFunction;
+- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSDate *)timestamp;
 
 @end

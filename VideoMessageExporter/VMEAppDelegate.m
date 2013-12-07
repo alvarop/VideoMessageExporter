@@ -11,14 +11,31 @@
 
 sqlite3 *db;
 
+//
+// Called for each matched row
+//
 static int sqlite_callback(void *caller, int argc, char **argv, char **azColName) {
 	VMEAppDelegate *delegate = (__bridge id)(caller);
+	NSURL *pathURL = nil;
+	NSString *author = nil;
+	NSDate *timestamp = nil;
 	
+	// Go through each column
 	for(uint32_t i = 0; i < argc; i++) {
-		NSLog(@"%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		if(strcmp("vod_path", azColName[i]) == 0) {
+			pathURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%s", argv[i]]];
+		} else if(strcmp("author", azColName[i]) == 0) {
+			author = [NSString stringWithFormat:@"%s",argv[i]];
+		} else if(strcmp("creation_timestamp", azColName[i]) == 0) {
+			if(argv[i]) {
+				timestamp = [NSDate dateWithTimeIntervalSince1970:strtod(argv[i], NULL)];
+			} else {
+				timestamp = [NSDate date];
+			}
+		}
 	}
 	
-	[delegate testFunction];
+	[delegate addVideoMessageWithURL:pathURL author:author timestamp:timestamp];
 	
 	return 0;
 }
@@ -27,8 +44,6 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	// Insert code here to initialize your application
-	
 	char path[] = "/Users/alvaro/Library/Application Support/Skype/apg88zx/main.db.bak";
 	int rc;
 	char *errMsg;
@@ -49,8 +64,12 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	sqlite3_close(db);
 }
 
-- (void)testFunction {
-	NSLog(@"Test function!");
+- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSDate *)timestamp {
+	NSLog(@"Adding video message!\nurl: %@\nauthor: %@\ntimestamp: %@", url, author, timestamp);
+}
+
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+	return YES;
 }
 
 @end
