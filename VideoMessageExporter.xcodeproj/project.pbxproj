@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		38A6CC611853815D00D19E3D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC601853815D00D19E3D /* Cocoa.framework */; };
+		38A6CC6B1853815D00D19E3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC691853815D00D19E3D /* InfoPlist.strings */; };
+		38A6CC6D1853815D00D19E3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A6CC6C1853815D00D19E3D /* main.m */; };
+		38A6CC711853815D00D19E3D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC6F1853815D00D19E3D /* Credits.rtf */; };
+		38A6CC741853815D00D19E3D /* VMEAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A6CC731853815D00D19E3D /* VMEAppDelegate.m */; };
+		38A6CC771853815D00D19E3D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC751853815D00D19E3D /* MainMenu.xib */; };
+		38A6CC791853815D00D19E3D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC781853815D00D19E3D /* Images.xcassets */; };
+		38A6CC801853815D00D19E3D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC7F1853815D00D19E3D /* XCTest.framework */; };
+		38A6CC811853815D00D19E3D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC601853815D00D19E3D /* Cocoa.framework */; };
+		38A6CC891853815D00D19E3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC871853815D00D19E3D /* InfoPlist.strings */; };
+		38A6CC8B1853815D00D19E3D /* VideoMessageExporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A6CC8A1853815D00D19E3D /* VideoMessageExporterTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		38A6CC821853815D00D19E3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38A6CC551853815D00D19E3D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 38A6CC5C1853815D00D19E3D;
+			remoteInfo = VideoMessageExporter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		38A6CC5D1853815D00D19E3D /* VideoMessageExporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoMessageExporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		38A6CC601853815D00D19E3D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		38A6CC631853815D00D19E3D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		38A6CC641853815D00D19E3D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		38A6CC651853815D00D19E3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		38A6CC681853815D00D19E3D /* VideoMessageExporter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VideoMessageExporter-Info.plist"; sourceTree = "<group>"; };
+		38A6CC6A1853815D00D19E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		38A6CC6C1853815D00D19E3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		38A6CC6E1853815D00D19E3D /* VideoMessageExporter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VideoMessageExporter-Prefix.pch"; sourceTree = "<group>"; };
+		38A6CC701853815D00D19E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		38A6CC721853815D00D19E3D /* VMEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMEAppDelegate.h; sourceTree = "<group>"; };
+		38A6CC731853815D00D19E3D /* VMEAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMEAppDelegate.m; sourceTree = "<group>"; };
+		38A6CC761853815D00D19E3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		38A6CC781853815D00D19E3D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		38A6CC7E1853815D00D19E3D /* VideoMessageExporterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoMessageExporterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		38A6CC7F1853815D00D19E3D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		38A6CC861853815D00D19E3D /* VideoMessageExporterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VideoMessageExporterTests-Info.plist"; sourceTree = "<group>"; };
+		38A6CC881853815D00D19E3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		38A6CC8A1853815D00D19E3D /* VideoMessageExporterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoMessageExporterTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		38A6CC5A1853815D00D19E3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC611853815D00D19E3D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38A6CC7B1853815D00D19E3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC811853815D00D19E3D /* Cocoa.framework in Frameworks */,
+				38A6CC801853815D00D19E3D /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		38A6CC541853815D00D19E3D = {
+			isa = PBXGroup;
+			children = (
+				38A6CC661853815D00D19E3D /* VideoMessageExporter */,
+				38A6CC841853815D00D19E3D /* VideoMessageExporterTests */,
+				38A6CC5F1853815D00D19E3D /* Frameworks */,
+				38A6CC5E1853815D00D19E3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		38A6CC5E1853815D00D19E3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC5D1853815D00D19E3D /* VideoMessageExporter.app */,
+				38A6CC7E1853815D00D19E3D /* VideoMessageExporterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		38A6CC5F1853815D00D19E3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC601853815D00D19E3D /* Cocoa.framework */,
+				38A6CC7F1853815D00D19E3D /* XCTest.framework */,
+				38A6CC621853815D00D19E3D /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		38A6CC621853815D00D19E3D /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC631853815D00D19E3D /* AppKit.framework */,
+				38A6CC641853815D00D19E3D /* CoreData.framework */,
+				38A6CC651853815D00D19E3D /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		38A6CC661853815D00D19E3D /* VideoMessageExporter */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC721853815D00D19E3D /* VMEAppDelegate.h */,
+				38A6CC731853815D00D19E3D /* VMEAppDelegate.m */,
+				38A6CC751853815D00D19E3D /* MainMenu.xib */,
+				38A6CC781853815D00D19E3D /* Images.xcassets */,
+				38A6CC671853815D00D19E3D /* Supporting Files */,
+			);
+			path = VideoMessageExporter;
+			sourceTree = "<group>";
+		};
+		38A6CC671853815D00D19E3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC681853815D00D19E3D /* VideoMessageExporter-Info.plist */,
+				38A6CC691853815D00D19E3D /* InfoPlist.strings */,
+				38A6CC6C1853815D00D19E3D /* main.m */,
+				38A6CC6E1853815D00D19E3D /* VideoMessageExporter-Prefix.pch */,
+				38A6CC6F1853815D00D19E3D /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		38A6CC841853815D00D19E3D /* VideoMessageExporterTests */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC8A1853815D00D19E3D /* VideoMessageExporterTests.m */,
+				38A6CC851853815D00D19E3D /* Supporting Files */,
+			);
+			path = VideoMessageExporterTests;
+			sourceTree = "<group>";
+		};
+		38A6CC851853815D00D19E3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				38A6CC861853815D00D19E3D /* VideoMessageExporterTests-Info.plist */,
+				38A6CC871853815D00D19E3D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		38A6CC5C1853815D00D19E3D /* VideoMessageExporter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 38A6CC8E1853815D00D19E3D /* Build configuration list for PBXNativeTarget "VideoMessageExporter" */;
+			buildPhases = (
+				38A6CC591853815D00D19E3D /* Sources */,
+				38A6CC5A1853815D00D19E3D /* Frameworks */,
+				38A6CC5B1853815D00D19E3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VideoMessageExporter;
+			productName = VideoMessageExporter;
+			productReference = 38A6CC5D1853815D00D19E3D /* VideoMessageExporter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		38A6CC7D1853815D00D19E3D /* VideoMessageExporterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 38A6CC911853815D00D19E3D /* Build configuration list for PBXNativeTarget "VideoMessageExporterTests" */;
+			buildPhases = (
+				38A6CC7A1853815D00D19E3D /* Sources */,
+				38A6CC7B1853815D00D19E3D /* Frameworks */,
+				38A6CC7C1853815D00D19E3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				38A6CC831853815D00D19E3D /* PBXTargetDependency */,
+			);
+			name = VideoMessageExporterTests;
+			productName = VideoMessageExporterTests;
+			productReference = 38A6CC7E1853815D00D19E3D /* VideoMessageExporterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		38A6CC551853815D00D19E3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = VME;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Alvaro Prieto";
+				TargetAttributes = {
+					38A6CC7D1853815D00D19E3D = {
+						TestTargetID = 38A6CC5C1853815D00D19E3D;
+					};
+				};
+			};
+			buildConfigurationList = 38A6CC581853815D00D19E3D /* Build configuration list for PBXProject "VideoMessageExporter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 38A6CC541853815D00D19E3D;
+			productRefGroup = 38A6CC5E1853815D00D19E3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				38A6CC5C1853815D00D19E3D /* VideoMessageExporter */,
+				38A6CC7D1853815D00D19E3D /* VideoMessageExporterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		38A6CC5B1853815D00D19E3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC6B1853815D00D19E3D /* InfoPlist.strings in Resources */,
+				38A6CC791853815D00D19E3D /* Images.xcassets in Resources */,
+				38A6CC711853815D00D19E3D /* Credits.rtf in Resources */,
+				38A6CC771853815D00D19E3D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38A6CC7C1853815D00D19E3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC891853815D00D19E3D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		38A6CC591853815D00D19E3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC6D1853815D00D19E3D /* main.m in Sources */,
+				38A6CC741853815D00D19E3D /* VMEAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38A6CC7A1853815D00D19E3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38A6CC8B1853815D00D19E3D /* VideoMessageExporterTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		38A6CC831853815D00D19E3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 38A6CC5C1853815D00D19E3D /* VideoMessageExporter */;
+			targetProxy = 38A6CC821853815D00D19E3D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		38A6CC691853815D00D19E3D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38A6CC6A1853815D00D19E3D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		38A6CC6F1853815D00D19E3D /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38A6CC701853815D00D19E3D /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		38A6CC751853815D00D19E3D /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38A6CC761853815D00D19E3D /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		38A6CC871853815D00D19E3D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38A6CC881853815D00D19E3D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		38A6CC8C1853815D00D19E3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		38A6CC8D1853815D00D19E3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		38A6CC8F1853815D00D19E3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
+				INFOPLIST_FILE = "VideoMessageExporter/VideoMessageExporter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		38A6CC901853815D00D19E3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
+				INFOPLIST_FILE = "VideoMessageExporter/VideoMessageExporter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		38A6CC921853815D00D19E3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VideoMessageExporter.app/Contents/MacOS/VideoMessageExporter";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "VideoMessageExporterTests/VideoMessageExporterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		38A6CC931853815D00D19E3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VideoMessageExporter.app/Contents/MacOS/VideoMessageExporter";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
+				INFOPLIST_FILE = "VideoMessageExporterTests/VideoMessageExporterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		38A6CC581853815D00D19E3D /* Build configuration list for PBXProject "VideoMessageExporter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38A6CC8C1853815D00D19E3D /* Debug */,
+				38A6CC8D1853815D00D19E3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		38A6CC8E1853815D00D19E3D /* Build configuration list for PBXNativeTarget "VideoMessageExporter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38A6CC8F1853815D00D19E3D /* Debug */,
+				38A6CC901853815D00D19E3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		38A6CC911853815D00D19E3D /* Build configuration list for PBXNativeTarget "VideoMessageExporterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38A6CC921853815D00D19E3D /* Debug */,
+				38A6CC931853815D00D19E3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 38A6CC551853815D00D19E3D /* Project object */;
+}
