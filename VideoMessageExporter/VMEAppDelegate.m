@@ -9,7 +9,10 @@
 #import "VMEAppDelegate.h"
 #include <sqlite3.h>
 
-sqlite3 *db;
+static NSString * const kPath = @"kPath";
+static NSString * const kTimestamp = @"kTimestamp";
+static NSString * const kAuthor = @"kAuthor";
+static NSString * const kUsername = @"kUsername";
 
 //
 // Called for each matched row
@@ -40,13 +43,76 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	return 0;
 }
 
-@implementation VMEAppDelegate
+@implementation VMEAppDelegate {
+	NSString *currentUsername;
+	NSMutableArray *videos;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	char path[] = "/Users/alvaro/Library/Application Support/Skype/apg88zx/main.db.bak";
+	videos = [[NSMutableArray alloc] init];
+	
+	NSDictionary *files = [self getDBFiles];
+	NSEnumerator *enumerator = [files keyEnumerator];
+
+	for(NSString *username in enumerator) {
+		currentUsername = username;
+		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation]];
+	}
+	
+	NSLog(@"Found %ld Video Messages", [videos count]);
+}
+
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+	return YES;
+}
+
+-(NSDictionary *)getDBFiles {
+	NSString *basePath = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Application Support/Skype"];
+	NSFileManager *fileManager = [[NSFileManager alloc] init];
+	NSURL *directoryURL = [NSURL fileURLWithPath:basePath];
+	NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
+	NSMutableDictionary *paths = [[NSMutableDictionary alloc] init];
+	
+	NSLog(@"Searching %@", basePath);
+	
+	NSDirectoryEnumerator *enumerator = [fileManager
+										 enumeratorAtURL:directoryURL
+										 includingPropertiesForKeys:keys
+										 options:0
+										 errorHandler:^(NSURL *url, NSError *error) {
+											 // Handle the error.
+											 // Return YES if the enumeration should continue after the error.
+											 return YES;
+										 }];
+	
+	for (NSURL *url in enumerator) {
+		NSError *error;
+		NSNumber *isDirectory = nil;
+		if (![url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:&error]) {
+			NSLog(@"ERROR: %@", error);
+		} else if (![isDirectory boolValue]) {
+			if([[url lastPathComponent] isEqualToString:@"main.db"]) {
+				NSArray *pathComponents = [url pathComponents];
+				NSString *username = [pathComponents objectAtIndex:[pathComponents count] - 2];
+				
+				[paths setObject:url forKey:username];
+			}
+		}
+	}
+	
+	return paths;
+}
+
+//
+// Open sqlite db and get VideoMessages table
+//
+-(void)loadMessageInfoFromFile:(const char *)path {
+	sqlite3 *db;
 	int rc;
 	char *errMsg;
+	
+	NSLog(@"Opening %s", path);
 	
 	rc = sqlite3_open(path, &db);
 	
@@ -65,11 +131,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 }
 
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSDate *)timestamp {
-	NSLog(@"Adding video message!\nurl: %@\nauthor: %@\ntimestamp: %@", url, author, timestamp);
-}
-
--(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
-	return YES;
+	[videos addObject:@{kPath:url, kAuthor:author, kTimestamp:timestamp, kUsername:currentUsername}];
 }
 
 @end
