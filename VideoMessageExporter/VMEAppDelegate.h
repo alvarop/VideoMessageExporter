@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface VMEAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
+@interface VMEAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSTableView *myTableView;
