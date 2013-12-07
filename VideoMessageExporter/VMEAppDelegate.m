@@ -131,9 +131,30 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	if(rc != SQLITE_OK) {
 		NSLog(@"SQL error: %s\n", errMsg);
 		sqlite3_free(errMsg);
+		sqlite3_close(db);
+		
+		NSAlert *alert = [[NSAlert alloc] init];
+		[alert addButtonWithTitle:@"OK"];
+		[alert setMessageText:@"Error opening Skype database"];
+		[alert setInformativeText:@"Close Skype and restart the application."];
+		[alert setAlertStyle:NSWarningAlertStyle];
+		[alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){[NSApp terminate:self];}];
+		
 	}
 	
 	sqlite3_close(db);
+}
+
+- (IBAction)downloadSelected:(id)sender {
+	
+	NSUInteger index = [[_myTableView selectedRowIndexes] firstIndex];
+	
+	while(index != NSNotFound) {
+
+		[[NSWorkspace sharedWorkspace] openURL:[[videos objectAtIndex:index] objectForKey:kPath ]];
+		
+		index = [[_myTableView selectedRowIndexes] indexGreaterThanIndex:index];
+	}
 }
 
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp {

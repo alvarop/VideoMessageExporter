@@ -11,9 +11,9 @@
 @interface VMEAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
-
 @property (weak) IBOutlet NSTableView *myTableView;
 
+- (IBAction)downloadSelected:(id)sender;
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp;
 
 @end
