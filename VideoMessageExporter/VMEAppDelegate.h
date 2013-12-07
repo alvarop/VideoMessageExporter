@@ -8,10 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface VMEAppDelegate : NSObject <NSApplicationDelegate>
+@interface VMEAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
 
-- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSDate *)timestamp;
+@property (weak) IBOutlet NSTableView *myTableView;
+
+- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp;
 
 @end

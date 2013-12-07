@@ -21,7 +21,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	VMEAppDelegate *delegate = (__bridge id)(caller);
 	NSURL *pathURL = nil;
 	NSString *author = nil;
-	NSDate *timestamp = nil;
+	NSString *timestamp = nil;
 	
 	// Go through each column
 	for(uint32_t i = 0; i < argc; i++) {
@@ -30,11 +30,14 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		} else if(strcmp("author", azColName[i]) == 0) {
 			author = [NSString stringWithFormat:@"%s",argv[i]];
 		} else if(strcmp("creation_timestamp", azColName[i]) == 0) {
+			NSDate *date;
 			if(argv[i]) {
-				timestamp = [NSDate dateWithTimeIntervalSince1970:strtod(argv[i], NULL)];
+				date = [NSDate dateWithTimeIntervalSince1970:strtod(argv[i], NULL)];
 			} else {
-				timestamp = [NSDate date];
+				date = [NSDate date];
 			}
+			
+			timestamp = [date descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M" timeZone:nil locale:nil];
 		}
 	}
 	
@@ -51,6 +54,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	videos = [[NSMutableArray alloc] init];
+	[_myTableView setDataSource:self];
 	
 	NSDictionary *files = [self getDBFiles];
 	NSEnumerator *enumerator = [files keyEnumerator];
@@ -59,6 +63,8 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		currentUsername = username;
 		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation]];
 	}
+	
+	[_myTableView reloadData];
 	
 	NSLog(@"Found %ld Video Messages", [videos count]);
 }
@@ -130,8 +136,19 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	sqlite3_close(db);
 }
 
-- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSDate *)timestamp {
+- (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp {
 	[videos addObject:@{kPath:url, kAuthor:author, kTimestamp:timestamp, kUsername:currentUsername}];
+}
+
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+	return [videos count];
+}
+
+-(id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	if([tableView isEqualTo:_myTableView]) {
+		
+	}
+	return [[videos objectAtIndex:row] objectForKey:[tableColumn identifier]];
 }
 
 @end
