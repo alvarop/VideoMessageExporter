@@ -120,13 +120,26 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 // Open sqlite db and get VideoMessages table
 //
 -(void)loadMessageInfoFromFile:(const char *)path {
+	NSError *error = nil;
 	sqlite3 *db;
 	int rc;
 	char *errMsg;
+	char tmpFileName[] = "/tmp/skypedb.XXXXXX";
+	char *dbPath = (char *)path;
 	
-	NSLog(@"Opening %s", path);
+	// Make temporary filename to copy database to
+	mktemp(tmpFileName);
 	
-	rc = sqlite3_open(path, &db);
+	// Copy skype DB to temporary file so we can open it while it is running
+	if ([[NSFileManager defaultManager] copyItemAtPath:[NSString stringWithFormat:@"%s",path] toPath:[NSString stringWithFormat:@"%s",tmpFileName]  error:&error]) {
+		dbPath = tmpFileName;
+	} else {
+		NSLog(@"Error creating temporary db file. %@", error);
+	}
+	
+	NSLog(@"Opening %s", dbPath);
+	
+	rc = sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READONLY, NULL);
 	
 	if(rc) {
 		NSLog(@"Can't open database: %s\n", sqlite3_errmsg(db));
@@ -149,6 +162,8 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	}
 	
 	sqlite3_close(db);
+	
+	[[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%s",tmpFileName] error:&error];
 }
 
 - (IBAction)downloadSelected:(id)sender {
