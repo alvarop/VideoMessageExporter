@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -740,7 +741,7 @@
                         </tableHeaderView>
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Atg-Qv-73n">
-                        <rect key="frame" x="278" y="13" width="160" height="32"/>
+                        <rect key="frame" x="542" y="13" width="160" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Download Selected" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="D2n-bN-bb1">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -750,14 +751,27 @@
                             <action selector="downloadSelected:" target="494" id="je2-eD-HGP"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wl1-cm-T0g">
+                        <rect key="frame" x="14" y="13" width="119" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Refresh Files" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1xq-Zq-ggX">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="refreshFiles:" target="494" id="QH1-Fu-9og"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Atg-Qv-73n" firstAttribute="top" secondItem="dmw-fK-Cx9" secondAttribute="bottom" constant="20" symbolic="YES" id="QqF-yB-6HF"/>
-                    <constraint firstAttribute="bottom" secondItem="Atg-Qv-73n" secondAttribute="bottom" constant="20" symbolic="YES" id="R7e-fj-ZzR"/>
+                    <constraint firstItem="wl1-cm-T0g" firstAttribute="baseline" secondItem="Atg-Qv-73n" secondAttribute="baseline" id="DIZ-sJ-9NP"/>
+                    <constraint firstItem="Atg-Qv-73n" firstAttribute="trailing" secondItem="dmw-fK-Cx9" secondAttribute="trailing" id="Osc-7k-x5G"/>
                     <constraint firstItem="dmw-fK-Cx9" firstAttribute="top" secondItem="372" secondAttribute="top" constant="20" symbolic="YES" id="Wwg-MG-f0A"/>
+                    <constraint firstAttribute="bottom" secondItem="wl1-cm-T0g" secondAttribute="bottom" constant="20" symbolic="YES" id="gdR-4i-xiD"/>
                     <constraint firstAttribute="trailing" secondItem="dmw-fK-Cx9" secondAttribute="trailing" constant="20" symbolic="YES" id="hp8-HP-PTi"/>
-                    <constraint firstItem="Atg-Qv-73n" firstAttribute="centerX" secondItem="dmw-fK-Cx9" secondAttribute="centerX" id="rn9-dB-dzR"/>
+                    <constraint firstItem="wl1-cm-T0g" firstAttribute="top" secondItem="dmw-fK-Cx9" secondAttribute="bottom" constant="20" symbolic="YES" id="rAI-sI-sM3"/>
                     <constraint firstItem="dmw-fK-Cx9" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="uwo-a5-8hM"/>
+                    <constraint firstItem="wl1-cm-T0g" firstAttribute="leading" secondItem="dmw-fK-Cx9" secondAttribute="leading" id="yM0-fx-Qdg"/>
                 </constraints>
             </view>
         </window>

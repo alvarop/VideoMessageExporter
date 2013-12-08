@@ -59,20 +59,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	videos = [[NSMutableArray alloc] init];
-	[_myTableView setDataSource:self];
-	
-	NSDictionary *files = [self getDBFiles];
-	NSEnumerator *enumerator = [files keyEnumerator];
-
-	for(NSString *username in enumerator) {
-		currentUsername = username;
-		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation]];
-	}
-	
-	[_myTableView reloadData];
-	
-	NSLog(@"Found %ld Video Messages", [videos count]);
+	[self refreshFiles:nil];
 }
 
 -(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
@@ -194,6 +181,24 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		
 		index = [[_myTableView selectedRowIndexes] indexGreaterThanIndex:index];
 	}
+}
+
+- (IBAction)refreshFiles:(id)sender {
+	videos = nil;
+	videos = [[NSMutableArray alloc] init];
+	[_myTableView setDataSource:self];
+	
+	NSDictionary *files = [self getDBFiles];
+	NSEnumerator *enumerator = [files keyEnumerator];
+	
+	for(NSString *username in enumerator) {
+		currentUsername = username;
+		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation]];
+	}
+	
+	[_myTableView reloadData];
+	
+	NSLog(@"Found %ld Video Messages", [videos count]);
 }
 
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp {

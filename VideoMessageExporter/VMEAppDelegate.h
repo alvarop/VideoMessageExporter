@@ -14,6 +14,7 @@
 @property (weak) IBOutlet NSTableView *myTableView;
 
 - (IBAction)downloadSelected:(id)sender;
+- (IBAction)refreshFiles:(id)sender;
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp;
 
 @end
