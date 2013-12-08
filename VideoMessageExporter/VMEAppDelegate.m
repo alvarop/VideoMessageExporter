@@ -225,12 +225,15 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	NSMutableData *connectionData;
 	NSMutableDictionary *dict = [self getDictForConnection:connection];
-
-	NSLog(@"response: %lld %@ %@", [response expectedContentLength], [response suggestedFilename], [response MIMEType]);
 	
 	if(dict != nil) {
-		connectionData = [dict objectForKey:kData];
-		[connectionData setLength:0];
+		if([response expectedContentLength] == NSURLResponseUnknownLength) {
+			
+		} else {
+			connectionData = [dict objectForKey:kData];
+			[connectionData setLength:0];
+		}
+		
 		[dict setObject:[NSNumber numberWithInteger:[response expectedContentLength]] forKey:kDataSize];
 	}
 }
@@ -243,7 +246,6 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		connectionData = [dict objectForKey:kData];
 		[connectionData appendData:data];
 		[dict setObject:[NSString stringWithFormat:@"%3.1f%%", [connectionData length]/[[dict objectForKey:kDataSize] doubleValue] * 100.0] forKey:kProgress];
-		NSLog(@"progress %ld", [data length]);
 		[_myTableView reloadData];
 	}
 }
@@ -274,18 +276,28 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	
 	if(dict != nil) {
 		connectionData = [dict objectForKey:kData];
-		
+
 		NSString *outFileName = [NSHomeDirectory() stringByAppendingPathComponent:@"/Desktop"];
 		outFileName = [outFileName stringByAppendingString:[NSString stringWithFormat:@"/%@%@.mp4", [dict objectForKey:kAuthor], [dict objectForKey:kTimestamp]]];
-		[connectionData writeToURL:[NSURL fileURLWithPath:outFileName] atomically:YES];
 		
-		NSLog(@"Successfully downloaded %@", outFileName);
-		
-		[connectionData setLength:0];
-		[dict removeObjectForKey:kConnection];
-		[dict removeObjectForKey:kData];
-		[dict setObject:@"Done!" forKey:kProgress];
-		[_myTableView reloadData];
+		if([[dict objectForKey:kDataSize] integerValue] == NSURLResponseUnknownLength) {
+			NSLog(@"Error downloading %@", outFileName);
+			[connectionData setLength:0];
+			[dict removeObjectForKey:kConnection];
+			[dict removeObjectForKey:kData];
+			[dict setObject:@"ERROR 401" forKey:kProgress];
+			[_myTableView reloadData];
+		} else {
+			[connectionData writeToURL:[NSURL fileURLWithPath:outFileName] atomically:YES];
+			
+			NSLog(@"Successfully downloaded %@", outFileName);
+			
+			[connectionData setLength:0];
+			[dict removeObjectForKey:kConnection];
+			[dict removeObjectForKey:kData];
+			[dict setObject:@"Done!" forKey:kProgress];
+			[_myTableView reloadData];
+		}
 	}
 
 }

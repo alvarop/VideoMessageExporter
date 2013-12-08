@@ -392,6 +392,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
 				INFOPLIST_FILE = "VideoMessageExporter/VideoMessageExporter-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -405,6 +406,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VideoMessageExporter/VideoMessageExporter-Prefix.pch";
 				INFOPLIST_FILE = "VideoMessageExporter/VideoMessageExporter-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -469,6 +471,7 @@
 				38A6CC901853815D00D19E3D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		38A6CC911853815D00D19E3D /* Build configuration list for PBXNativeTarget "VideoMessageExporterTests" */ = {
 			isa = XCConfigurationList;
@@ -477,6 +480,7 @@
 				38A6CC931853815D00D19E3D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
