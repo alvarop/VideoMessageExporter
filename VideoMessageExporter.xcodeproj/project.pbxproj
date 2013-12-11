@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		386813681858B54000358B84 /* skype_videomessage_exporter_icon_©ng2013.icns in Resources */ = {isa = PBXBuildFile; fileRef = 386813671858B54000358B84 /* skype_videomessage_exporter_icon_©ng2013.icns */; };
 		38A6CC611853815D00D19E3D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A6CC601853815D00D19E3D /* Cocoa.framework */; };
 		38A6CC6B1853815D00D19E3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A6CC691853815D00D19E3D /* InfoPlist.strings */; };
 		38A6CC6D1853815D00D19E3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A6CC6C1853815D00D19E3D /* main.m */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		386813671858B54000358B84 /* skype_videomessage_exporter_icon_©ng2013.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "skype_videomessage_exporter_icon_©ng2013.icns"; sourceTree = "<group>"; };
 		38A6CC5D1853815D00D19E3D /* VideoMessageExporter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoMessageExporter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A6CC601853815D00D19E3D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		38A6CC631853815D00D19E3D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -131,6 +133,7 @@
 		38A6CC671853815D00D19E3D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				386813671858B54000358B84 /* skype_videomessage_exporter_icon_©ng2013.icns */,
 				38A6CC681853815D00D19E3D /* VideoMessageExporter-Info.plist */,
 				38A6CC691853815D00D19E3D /* InfoPlist.strings */,
 				38A6CC6C1853815D00D19E3D /* main.m */,
@@ -235,6 +238,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				386813681858B54000358B84 /* skype_videomessage_exporter_icon_©ng2013.icns in Resources */,
 				38A6CC6B1853815D00D19E3D /* InfoPlist.strings in Resources */,
 				38A6CC791853815D00D19E3D /* Images.xcassets in Resources */,
 				38A6CC711853815D00D19E3D /* Credits.rtf in Resources */,

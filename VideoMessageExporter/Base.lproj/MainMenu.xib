@@ -650,27 +650,28 @@
         <window title="VideoMessage Exporter" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="716" height="568"/>
+            <rect key="contentRect" x="335" y="390" width="715" height="235"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <value key="minSize" type="size" width="715" height="235"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="716" height="568"/>
+                <rect key="frame" x="0.0" y="0.0" width="715" height="235"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dmw-fK-Cx9">
-                        <rect key="frame" x="20" y="61" width="676" height="487"/>
+                        <rect key="frame" x="20" y="61" width="675" height="154"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="37d-VC-EuR">
-                            <rect key="frame" x="1" y="17" width="674" height="469"/>
+                            <rect key="frame" x="1" y="17" width="673" height="136"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" autosaveColumns="NO" headerView="bz2-m2-rSk" id="XA4-qB-NUz">
-                                    <rect key="frame" x="0.0" y="0.0" width="674" height="469"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="673" height="136"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="kUsername" editable="NO" width="170" minWidth="40" maxWidth="1000" id="QzO-Yh-5Fl">
+                                        <tableColumn identifier="kUsername" editable="NO" width="169" minWidth="40" maxWidth="1000" id="QzO-Yh-5Fl">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Account">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -736,12 +737,12 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <tableHeaderView key="headerView" id="bz2-m2-rSk">
-                            <rect key="frame" x="0.0" y="0.0" width="674" height="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="673" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Atg-Qv-73n">
-                        <rect key="frame" x="542" y="13" width="160" height="32"/>
+                        <rect key="frame" x="541" y="13" width="160" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Download Selected" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="D2n-bN-bb1">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
