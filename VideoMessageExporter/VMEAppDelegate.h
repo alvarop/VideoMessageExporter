@@ -13,8 +13,10 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSTableView *myTableView;
 
+@property (weak) IBOutlet NSTextField *savePathTextField;
 - (IBAction)downloadSelected:(id)sender;
 - (IBAction)refreshFiles:(id)sender;
+- (IBAction)selecPathButton:(id)sender;
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp;
 
 @end

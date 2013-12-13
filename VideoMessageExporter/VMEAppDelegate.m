@@ -55,10 +55,32 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 @implementation VMEAppDelegate {
 	NSString *currentUsername;
 	NSMutableArray *videos;
+	NSURL *saveDirectory;
+}
+
+-(void)updateSaveDirectory {
+	NSOpenPanel* panel = [NSOpenPanel openPanel];
+	[panel setCanChooseDirectories:YES];
+	[panel setCanCreateDirectories:YES];
+	[panel setCanChooseFiles:NO];
+	[panel setAllowsMultipleSelection:NO];
+	[panel setTitle:@"Select save path"];
+	
+	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+		if (result == NSFileHandlingPanelOKButton) {
+			NSArray* urls = [panel URLs];
+			if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%s",[[urls objectAtIndex:0] fileSystemRepresentation]]]) {
+				saveDirectory = [urls objectAtIndex:0];
+				[_savePathTextField setStringValue:[NSString stringWithFormat:@"%s",[[urls objectAtIndex:0] fileSystemRepresentation]]];
+			}
+		}
+	}];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	saveDirectory = [NSURL URLWithString:[NSHomeDirectory() stringByAppendingPathComponent:@"/Desktop"]];
+	[_savePathTextField setStringValue:[saveDirectory absoluteString]];
 	[self refreshFiles:nil];
 }
 
@@ -201,6 +223,10 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	NSLog(@"Found %ld Video Messages", [videos count]);
 }
 
+- (IBAction)selecPathButton:(id)sender {
+	[self updateSaveDirectory];
+}
+
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp {
 	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
 	
@@ -297,7 +323,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	if(dict != nil) {
 		connectionData = [dict objectForKey:kData];
 
-		NSString *outFileName = [NSHomeDirectory() stringByAppendingPathComponent:@"/Desktop"];
+		NSString *outFileName = [NSString stringWithFormat:@"%s", [saveDirectory fileSystemRepresentation]];
 		outFileName = [outFileName stringByAppendingString:[NSString stringWithFormat:@"/%@%@.mp4", [dict objectForKey:kAuthor], [dict objectForKey:kTimestamp]]];
 		
 		if([[dict objectForKey:kDataSize] integerValue] == NSURLResponseUnknownLength) {
