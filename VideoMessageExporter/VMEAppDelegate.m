@@ -128,7 +128,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 //
 // Open sqlite db and get VideoMessages table
 //
--(void)loadMessageInfoFromFile:(const char *)path {
+-(void)loadMessageInfoFromFile:(const char *)path showError:(BOOL)showError {
 	NSError *error = nil;
 	sqlite3 *db;
 	int rc;
@@ -146,7 +146,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		NSLog(@"Error creating temporary db file. %@", error);
 	}
 	
-	NSLog(@"Opening %s", dbPath);
+	NSLog(@"Opening %s (%s)", dbPath, path);
 	
 	rc = sqlite3_open_v2(dbPath, &db, SQLITE_OPEN_READONLY, NULL);
 	
@@ -161,13 +161,15 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 		sqlite3_free(errMsg);
 		sqlite3_close(db);
 		
-		NSAlert *alert = [[NSAlert alloc] init];
-		[alert addButtonWithTitle:@"OK"];
-		[alert setMessageText:@"Error opening Skype database"];
-		[alert setInformativeText:@"Close Skype and restart the application."];
-		[alert setAlertStyle:NSWarningAlertStyle];
-		[alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){[NSApp terminate:self];}];
-		
+		if(showError) {
+			NSAlert *alert = [[NSAlert alloc] init];
+			[alert addButtonWithTitle:@"OK"];
+			[alert setMessageText:@"Error opening Skype database"];
+			[alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%s)", path]];
+			[alert setAlertStyle:NSWarningAlertStyle];
+			[alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%s)", path);}];
+		}
+			
 	}
 	
 	sqlite3_close(db);
@@ -215,7 +217,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	
 	for(NSString *username in enumerator) {
 		currentUsername = username;
-		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation]];
+		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation] showError:(sender == nil)];
 	}
 	
 	[_myTableView reloadData];
