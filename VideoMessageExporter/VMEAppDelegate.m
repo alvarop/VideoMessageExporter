@@ -217,7 +217,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	
 	for(NSString *username in enumerator) {
 		currentUsername = username;
-		[self loadMessageInfoFromFile:[[files objectForKey:username] fileSystemRepresentation] showError:(sender == nil)];
+		[self loadMessageInfoFromFile:[[[files objectForKey:username] path] cStringUsingEncoding:NSUTF8StringEncoding] showError:(sender == nil)];
 	}
 	
 	[_myTableView reloadData];
