@@ -646,9 +646,6 @@
                     </menu>
                 </menuItem>
             </items>
-            <connections>
-                <outlet property="delegate" destination="494" id="2Jv-aO-SVH"/>
-            </connections>
         </menu>
         <window title="VideoMessage Exporter" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
@@ -812,9 +809,6 @@
                     <constraint firstItem="Jjl-cH-GZI" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="22" id="t9k-9Y-R7c"/>
                 </constraints>
             </view>
-            <connections>
-                <outlet property="delegate" destination="494" id="pgC-iy-igq"/>
-            </connections>
         </window>
         <customObject id="494" customClass="VMEAppDelegate">
             <connections>
