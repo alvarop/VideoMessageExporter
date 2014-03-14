@@ -69,9 +69,9 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
 		if (result == NSFileHandlingPanelOKButton) {
 			NSArray* urls = [panel URLs];
-			if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%s",[[urls objectAtIndex:0] fileSystemRepresentation]]]) {
+			if([[NSFileManager defaultManager] fileExistsAtPath:[[urls objectAtIndex:0] path]]) {
 				saveDirectory = [urls objectAtIndex:0];
-				[_savePathTextField setStringValue:[NSString stringWithFormat:@"%s",[[urls objectAtIndex:0] fileSystemRepresentation]]];
+				[_savePathTextField setStringValue:[[urls objectAtIndex:0] path]];
 			}
 		}
 	}];
@@ -325,7 +325,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	if(dict != nil) {
 		connectionData = [dict objectForKey:kData];
 
-		NSString *outFileName = [NSString stringWithFormat:@"%s", [saveDirectory fileSystemRepresentation]];
+		NSString *outFileName = [saveDirectory path];
 		outFileName = [outFileName stringByAppendingString:[NSString stringWithFormat:@"/%@%@.mp4", [dict objectForKey:kAuthor], [dict objectForKey:kTimestamp]]];
 		
 		if([[dict objectForKey:kDataSize] integerValue] == NSURLResponseUnknownLength) {
