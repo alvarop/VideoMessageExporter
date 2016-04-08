@@ -55,7 +55,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	return 0;
 }
 
-static int sqlite_callback_assets(void *caller, int argc, char **argv, char **azColName) {
+static int sqlite_callback_media_documents(void *caller, int argc, char **argv, char **azColName) {
     VMEAppDelegate *delegate = (__bridge id)(caller);
     NSString *author = nil;
     NSString *timestamp = nil;
@@ -138,7 +138,7 @@ int32_t get_blob_filename(uint8_t *blob, size_t blob_len, char *filename, size_t
     return str_len;
 }
 
-static int sqlite_callback_media_documents(void *caller, int argc, char **argv, char **azColName) {
+static int sqlite_callback_assets(void *caller, int argc, char **argv, char **azColName) {
     VMEAppDelegate *delegate = (__bridge id)(caller);
     NSString *access_time = nil;
     NSString *sub_key = nil;
@@ -282,7 +282,7 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
         sqlite3_close(cache_db);
     }
     
-    rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
+    rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_assets, (__bridge void *)(self), &errMsg);
     
     if(rc != SQLITE_OK) {
         NSLog(@"SQL error: %s\n", errMsg);
@@ -311,7 +311,7 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
 	}
 	
 	rc = sqlite3_exec(main_db, "SELECT vod_path,author,creation_timestamp from VideoMessages;", sqlite_callback, (__bridge void *)(self), &errMsg);
-	rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml from Messages;", sqlite_callback_assets, (__bridge void *)(self), &errMsg);
+	rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml from Messages;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
     
     if(rc != SQLITE_OK) {
 		NSLog(@"SQL error: %s\n", errMsg);
