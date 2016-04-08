@@ -80,14 +80,11 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
     }
     NSRange xml = [body_xml rangeOfString:@"Video.1/Message.1"];
     if(xml.location != NSNotFound) {
-        
         NSRange uri_range = [body_xml rangeOfString:@" uri=\""];
         NSRange url_thumb_range = [body_xml rangeOfString:@"\" url_thumb"];
-        NSLog(@"%lu %lu", (unsigned long)uri_range.location, (unsigned long)url_thumb_range.location);
-        NSLog(@"%lu %lu", (unsigned long)uri_range.length, (unsigned long)url_thumb_range.length);
         
         NSString *uri = [body_xml substringWithRange:NSMakeRange(uri_range.location+uri_range.length, url_thumb_range.location-(uri_range.location+uri_range.length))];
-        NSLog(@"URI %@", uri);
+        
         [delegate addLocalVideoMessageWithURI:uri author:author timestamp: timestamp];
     }
     
@@ -270,9 +267,6 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
     NSLog(@"%@", path);
 	char *mainDBPath = (char*)[[path stringByAppendingString:@"/main.db"] cStringUsingEncoding:NSUTF8StringEncoding];
     char *cacheDBPath = (char *)[[path stringByAppendingString:@"/media_messaging/media_cache_v3/asyncdb/cache_db.db"] cStringUsingEncoding:NSUTF8StringEncoding];
-	
-    NSLog(@"%s %s", mainDBPath, cacheDBPath);
-	
     
     NSLog(@"Opening %s", cacheDBPath);
     rc = sqlite3_open_v2(cacheDBPath, &cache_db, SQLITE_OPEN_READONLY, NULL);
@@ -280,26 +274,27 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
     if(rc) {
         NSLog(@"Can't open database: %s\n", sqlite3_errmsg(cache_db));
         sqlite3_close(cache_db);
-    }
+    } else {
     
-    rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_assets, (__bridge void *)(self), &errMsg);
-    
-    if(rc != SQLITE_OK) {
-        NSLog(@"SQL error: %s\n", errMsg);
-        sqlite3_free(errMsg);
-        sqlite3_close(cache_db);
+        rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_assets, (__bridge void *)(self), &errMsg);
         
-        if(showError) {
-            NSAlert *alert = [[NSAlert alloc] init];
-            [alert addButtonWithTitle:@"OK"];
-            [alert setMessageText:@"Error opening Skype database"];
-            [alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%@)", path]];
-            [alert setAlertStyle:NSWarningAlertStyle];
-            [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%@)", path);}];
+        if(rc != SQLITE_OK) {
+            NSLog(@"SQL error: %s\n", errMsg);
+            sqlite3_free(errMsg);
+            sqlite3_close(cache_db);
+            
+            if(showError) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert addButtonWithTitle:@"OK"];
+                [alert setMessageText:@"Error opening Skype database"];
+                [alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%s)", cacheDBPath]];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%s)", cacheDBPath);}];
+            }
         }
+        
+        sqlite3_close(cache_db);
     }
-    
-    sqlite3_close(cache_db);
     
 	NSLog(@"Opening %s", mainDBPath);
 	
@@ -308,27 +303,28 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
 	if(rc) {
 		NSLog(@"Can't open database: %s\n", sqlite3_errmsg(main_db));
 		sqlite3_close(main_db);
-	}
+    } else {
 	
-	rc = sqlite3_exec(main_db, "SELECT vod_path,author,creation_timestamp from VideoMessages;", sqlite_callback, (__bridge void *)(self), &errMsg);
-	rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml from Messages;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
-    
-    if(rc != SQLITE_OK) {
-		NSLog(@"SQL error: %s\n", errMsg);
-		sqlite3_free(errMsg);
-		sqlite3_close(main_db);
-		
-		if(showError) {
-			NSAlert *alert = [[NSAlert alloc] init];
-			[alert addButtonWithTitle:@"OK"];
-			[alert setMessageText:@"Error opening Skype database"];
-			[alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%@)", path]];
-			[alert setAlertStyle:NSWarningAlertStyle];
-			[alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%@)", path);}];
-		}
-	}
-	
-	sqlite3_close(main_db);
+        rc = sqlite3_exec(main_db, "SELECT vod_path,author,creation_timestamp from VideoMessages;", sqlite_callback, (__bridge void *)(self), &errMsg);
+        rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml from Messages;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
+        
+        if(rc != SQLITE_OK) {
+            NSLog(@"SQL error: %s\n", errMsg);
+            sqlite3_free(errMsg);
+            sqlite3_close(main_db);
+            
+            if(showError) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert addButtonWithTitle:@"OK"];
+                [alert setMessageText:@"Error opening Skype database"];
+                [alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%s)", mainDBPath]];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%s)", mainDBPath);}];
+            }
+        }
+        
+        sqlite3_close(main_db);
+    }
 	
 }
 
