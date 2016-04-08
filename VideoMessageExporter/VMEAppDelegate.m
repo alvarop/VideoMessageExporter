@@ -91,9 +91,51 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
         [delegate addLocalVideoMessageWithURI:uri author:author timestamp: timestamp];
     }
     
-    
-    
     return 0;
+}
+
+// Simple string finding function, except it works with \0's all over the place
+ssize_t find_str(uint8_t *bytes, size_t len, char *str) {
+    ssize_t loc = 0;
+    
+    for(loc = 0; loc < (len - strlen(str)); loc++) {
+        if(memcmp(str, &bytes[loc], strlen(str)) == 0) {
+            break;
+        }
+    }
+    
+    if (loc == (len-strlen(str))) {
+        loc = -1;
+    }
+    
+    return loc;
+}
+
+// Blobs have whoknowswhat data, but they do have a cached filename that starts with $CACHE///
+// and ends with .mp4 :D
+int32_t get_blob_filename(uint8_t *blob, size_t blob_len, char *filename, size_t filename_max_len) {
+    int32_t str_len = -1;
+    char start_str[] = "$CACHE///";
+    char end_str[] = ".mp4";
+    int32_t start = (int32_t)find_str(blob, blob_len, start_str);
+    int32_t end = (int32_t)find_str(blob, blob_len, end_str);
+    
+    if ((start != -1) && (end != -1)) {
+        start += strlen(start_str);
+        end += strlen(end_str);
+        
+        str_len = end-start;
+        
+        
+        if(str_len > (filename_max_len - 1)) {
+            str_len = (int32_t)filename_max_len - 1;
+        }
+        
+        memcpy(filename, &blob[start], str_len);
+        filename[str_len] = 0; // Null terminate string!
+    }
+    
+    return str_len;
 }
 
 static int sqlite_callback_media_documents(void *caller, int argc, char **argv, char **azColName) {
@@ -102,15 +144,16 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
     NSString *sub_key = nil;
     NSString *key = nil;
     NSString *filename = nil;
+    char filename_str[256];
+    size_t blob_len;
+    uint8_t *blob;
+    
     // Go through each column
     for(uint32_t i = 0; i < argc; i++) {
-        
         if(strcmp("serialized_data", azColName[i]) == 0) {
-            // serialized_data is a blob. Filename starts at byte 22
-            filename = [NSString stringWithUTF8String:&argv[i][21]];
-            
-            // Last character is a garbace nonzero one
-            filename = [filename substringToIndex:[filename length] - 1];
+            blob = (uint8_t *)argv[i];
+        } if(strcmp("length(serialized_data)", azColName[i]) == 0) {
+            blob_len = strtoul(argv[i], NULL, 10);
         } else if(strcmp("key", azColName[i]) == 0) {
             key = [NSString stringWithFormat:@"%s",argv[i]];
         } else if(strcmp("sub_key", azColName[i]) == 0) {
@@ -126,8 +169,11 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
             access_time = [date descriptionWithCalendarFormat:@"%Y-%m-%d %H.%M.%S" timeZone:nil locale:nil];
         }
     }
-    
-    NSLog(@"%@ %@ %@ %@", access_time, filename, key, sub_key);
+
+    if(get_blob_filename(blob, blob_len, (char *)&filename_str, sizeof(filename_str)) > 0) {
+        filename = [NSString stringWithUTF8String:filename_str];
+        NSLog(@"Filename is \"%@\"", filename);
+    }
     
     [delegate addMediaFileWithFilename:filename key:key sub_key:sub_key];
     
@@ -236,7 +282,7 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
         sqlite3_close(cache_db);
     }
     
-    rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data from assets;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
+    rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
     
     if(rc != SQLITE_OK) {
         NSLog(@"SQL error: %s\n", errMsg);
