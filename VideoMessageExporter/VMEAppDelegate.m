@@ -9,9 +9,9 @@
 #import "VMEAppDelegate.h"
 #include <sqlite3.h>
 
-static NSString * const kFilename = @"kFilename";
-static NSString * const kKey = @"kKey";
-static NSString * const kSubKey = @"kSubKey";
+static NSString * const kURI = @"kURI";
+static NSString * const kThumbmail = @"kThumbnail";
+static NSString * const kWebUrl = @"kWebUrl";
 static NSString * const kPath = @"kPath";
 static NSString * const kTimestamp = @"kTimestamp";
 static NSString * const kAuthor = @"kAuthor";
@@ -55,7 +55,7 @@ static int sqlite_callback(void *caller, int argc, char **argv, char **azColName
 	return 0;
 }
 
-static int sqlite_callback_media_documents(void *caller, int argc, char **argv, char **azColName) {
+static int sqlite_callback_messages(void *caller, int argc, char **argv, char **azColName) {
     VMEAppDelegate *delegate = (__bridge id)(caller);
     NSString *author = nil;
     NSString *timestamp = nil;
@@ -91,89 +91,24 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
     return 0;
 }
 
-// Simple string finding function, except it works with \0's all over the place
-ssize_t find_str(uint8_t *bytes, size_t len, char *str) {
-    ssize_t loc = 0;
-    
-    for(loc = 0; loc < (len - strlen(str)); loc++) {
-        if(memcmp(str, &bytes[loc], strlen(str)) == 0) {
-            break;
-        }
-    }
-    
-    if (loc == (len-strlen(str))) {
-        loc = -1;
-    }
-    
-    return loc;
-}
-
-// Blobs have whoknowswhat data, but they do have a cached filename that starts with $CACHE///
-// and ends with .mp4 :D
-int32_t get_blob_filename(uint8_t *blob, size_t blob_len, char *filename, size_t filename_max_len) {
-    int32_t str_len = -1;
-    char start_str[] = "$CACHE///";
-    char end_str[] = ".mp4";
-    int32_t start = (int32_t)find_str(blob, blob_len, start_str);
-    int32_t end = (int32_t)find_str(blob, blob_len, end_str);
-    
-    if ((start != -1) && (end != -1)) {
-        start += strlen(start_str);
-        end += strlen(end_str);
-        
-        str_len = end-start;
-        
-        
-        if(str_len > (filename_max_len - 1)) {
-            str_len = (int32_t)filename_max_len - 1;
-        }
-        
-        memcpy(filename, &blob[start], str_len);
-        filename[str_len] = 0; // Null terminate string!
-    }
-    
-    return str_len;
-}
-
-static int sqlite_callback_assets(void *caller, int argc, char **argv, char **azColName) {
+static int sqlite_callback_media_documents(void *caller, int argc, char **argv, char **azColName) {
     VMEAppDelegate *delegate = (__bridge id)(caller);
-    NSString *access_time = nil;
-    NSString *sub_key = nil;
-    NSString *key = nil;
-    NSString *filename = nil;
-    char filename_str[256];
-    size_t blob_len;
-    uint8_t *blob;
-    
+    NSString *uri = nil;
+    NSString *thumbnail_url = nil;
+    NSString *web_url = nil;
     // Go through each column
     for(uint32_t i = 0; i < argc; i++) {
-        if(strcmp("serialized_data", azColName[i]) == 0) {
-            blob = (uint8_t *)argv[i];
-        } if(strcmp("length(serialized_data)", azColName[i]) == 0) {
-            blob_len = strtoul(argv[i], NULL, 10);
-        } else if(strcmp("key", azColName[i]) == 0) {
-            key = [NSString stringWithFormat:@"%s",argv[i]];
-        } else if(strcmp("sub_key", azColName[i]) == 0) {
-            sub_key = [NSString stringWithFormat:@"%s",argv[i]];
-        } else if(strcmp("access_time", azColName[i]) == 0) {
-            NSDate *date;
-            if(argv[i]) {
-                date = [NSDate dateWithTimeIntervalSince1970:strtod(argv[i], NULL)];
-            } else {
-                date = [NSDate date];
-            }
-            
-            access_time = [date descriptionWithCalendarFormat:@"%Y-%m-%d %H.%M.%S" timeZone:nil locale:nil];
+//        NSLog(@"%s %s", azColName[i], argv[i]);
+        if(strcmp("uri", azColName[i]) == 0) {
+            uri = [NSString stringWithFormat:@"%s",argv[i]];
+        } if(strcmp("thumbnail_url", azColName[i]) == 0) {
+            thumbnail_url = [NSString stringWithFormat:@"%s",argv[i]];
+        } if(strcmp("web_url", azColName[i]) == 0) {
+            web_url = [NSString stringWithFormat:@"%s",argv[i]];
         }
     }
-
-    if(get_blob_filename(blob, blob_len, (char *)&filename_str, sizeof(filename_str)) > 0) {
-        filename = [NSString stringWithUTF8String:filename_str];
-        NSLog(@"Filename is \"%@\"", filename);
-    }
     
-    [delegate addMediaFileWithFilename:filename key:key sub_key:sub_key];
-    
+    [delegate addMediaFileWithURI:uri thumbnail_url:thumbnail_url web_url:web_url];
     return 0;
 }
 
@@ -260,42 +195,13 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
 //
 -(void)loadMessageInfoFromFile:(NSString *)path showError:(BOOL)showError {
 //	NSError *error = nil;
-	sqlite3 *main_db, *cache_db;
+	sqlite3 *main_db;
 	int rc;
 	char *errMsg;
     currentPath = path;
     NSLog(@"%@", path);
 	char *mainDBPath = (char*)[[path stringByAppendingString:@"/main.db"] cStringUsingEncoding:NSUTF8StringEncoding];
-    char *cacheDBPath = (char *)[[path stringByAppendingString:@"/media_messaging/media_cache_v3/asyncdb/cache_db.db"] cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    NSLog(@"Opening %s", cacheDBPath);
-    rc = sqlite3_open_v2(cacheDBPath, &cache_db, SQLITE_OPEN_READONLY, NULL);
-    
-    if(rc) {
-        NSLog(@"Can't open database: %s\n", sqlite3_errmsg(cache_db));
-        sqlite3_close(cache_db);
-    } else {
-    
-        rc = sqlite3_exec(cache_db, "SELECT key,sub_key,access_time,serialized_data,length(serialized_data) from assets;", sqlite_callback_assets, (__bridge void *)(self), &errMsg);
-        
-        if(rc != SQLITE_OK) {
-            NSLog(@"SQL error: %s\n", errMsg);
-            sqlite3_free(errMsg);
-            sqlite3_close(cache_db);
-            
-            if(showError) {
-                NSAlert *alert = [[NSAlert alloc] init];
-                [alert addButtonWithTitle:@"OK"];
-                [alert setMessageText:@"Error opening Skype database"];
-                [alert setInformativeText:[NSString stringWithFormat:@"Close Skype and restart the application.\n(%s)", cacheDBPath]];
-                [alert setAlertStyle:NSWarningAlertStyle];
-                [alert beginSheetModalForWindow:[self window] completionHandler:^(NSInteger response){NSLog(@"Error opening Skype database (%s)", cacheDBPath);}];
-            }
-        }
-        
-        sqlite3_close(cache_db);
-    }
-    
+
 	NSLog(@"Opening %s", mainDBPath);
 	
 	rc = sqlite3_open_v2(mainDBPath, &main_db, SQLITE_OPEN_READONLY, NULL);
@@ -306,7 +212,18 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
     } else {
 	
         rc = sqlite3_exec(main_db, "SELECT vod_path,author,creation_timestamp from VideoMessages;", sqlite_callback, (__bridge void *)(self), &errMsg);
-        rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml from Messages;", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
+        
+        if(rc != SQLITE_OK) {
+            NSLog(@"SQL error: %s\n", errMsg);
+        }
+        
+        rc = sqlite3_exec(main_db, "SELECT uri,thumbnail_url,web_url FROM MediaDocuments WHERE type='Video.1/Message.1';", sqlite_callback_media_documents, (__bridge void *)(self), &errMsg);
+        
+        if(rc != SQLITE_OK) {
+            NSLog(@"SQL error: %s\n", errMsg);
+        }
+        
+        rc = sqlite3_exec(main_db, "SELECT author,timestamp,body_xml FROM Messages;", sqlite_callback_messages, (__bridge void *)(self), &errMsg);
         
         if(rc != SQLITE_OK) {
             NSLog(@"SQL error: %s\n", errMsg);
@@ -333,27 +250,33 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
 	NSUInteger index = [[_myTableView selectedRowIndexes] firstIndex];
 	
 	while(index != NSNotFound) {
-
-		//[[NSWorkspace sharedWorkspace] openURL:[[videos objectAtIndex:index] objectForKey:kPath ]];
+        
 		NSMutableDictionary *dict = [videos objectAtIndex:index];
-		NSURLRequest *newRequest = [NSURLRequest requestWithURL:[dict objectForKey:kPath] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60.0];
-		NSMutableData *newData = [NSMutableData dataWithCapacity:0];
-		NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:newRequest delegate:self];
-		
-		if (!theConnection) {
-			// Release the receivedData object.
-			[dict removeObjectForKey:kConnection];
-			[dict removeObjectForKey:kData];
-			
-			NSLog(@"Error downloading %@", [dict objectForKey:kPath] );
-		} else {
-			[dict setObject:newData forKey:kData];
-			[dict setObject:theConnection forKey:kConnection];
-			NSLog(@"Downloading %@", [dict objectForKey:kPath]);
-			[dict setObject:@"Downloading..." forKey:kProgress];
-			[_myTableView reloadData];
-		}
-		
+        
+        if([[[dict objectForKey:kPath] absoluteString] rangeOfString:@"login.skype.com"].location != NSNotFound) {
+            [[NSWorkspace sharedWorkspace] openURL:[[videos objectAtIndex:index] objectForKey:kPath ]];
+            [dict setObject:@"Opening..." forKey:kProgress];
+            [_myTableView reloadData];
+        } else {
+ 
+            NSURLRequest *newRequest = [NSURLRequest requestWithURL:[dict objectForKey:kPath] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60.0];
+            NSMutableData *newData = [NSMutableData dataWithCapacity:0];
+            NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:newRequest delegate:self];
+            
+            if (!theConnection) {
+                // Release the receivedData object.
+                [dict removeObjectForKey:kConnection];
+                [dict removeObjectForKey:kData];
+                
+                NSLog(@"Error downloading %@", [dict objectForKey:kPath] );
+            } else {
+                [dict setObject:newData forKey:kData];
+                [dict setObject:theConnection forKey:kConnection];
+                NSLog(@"Downloading %@", [dict objectForKey:kPath]);
+                [dict setObject:@"Downloading..." forKey:kProgress];
+                [_myTableView reloadData];
+            }
+        }
 		index = [[_myTableView selectedRowIndexes] indexGreaterThanIndex:index];
 	}
 }
@@ -398,31 +321,27 @@ static int sqlite_callback_assets(void *caller, int argc, char **argv, char **az
     NSLog(@"Looking for %@", uri);
     
     // Because there's a 'u' in front of https...
-    uri = [@"u" stringByAppendingString:uri];
+//    uri = [@"u" stringByAppendingString:uri];
     for (uint32_t index =0; index < [mediaFiles count]; index++){
         
-        if(![[[mediaFiles objectAtIndex:index] objectForKey:kSubKey] isEqualToString:@"pvideo"]) {
-            continue;
-        }
-        
-        if([[[mediaFiles objectAtIndex:index] objectForKey:kKey] isEqualToString: uri]) {
+        if([[[mediaFiles objectAtIndex:index] objectForKey:kURI] isEqualToString: uri]) {
             NSLog(@"MATCH!!!");
-            NSLog(@"%@ %@", [[mediaFiles objectAtIndex:index] objectForKey:kKey], uri);
-            NSURL *url = [NSURL fileURLWithPath:[currentPath stringByAppendingFormat:@"/media_messaging/media_cache_v3/%@",[[mediaFiles objectAtIndex:index] objectForKey:kFilename]]];
-            NSLog(@"%@", url);
+            NSLog(@"%@ %@", [[mediaFiles objectAtIndex:index] objectForKey:kURI], uri);
+            NSURL *url = [NSURL URLWithString:[[mediaFiles objectAtIndex:index] objectForKey:kWebUrl]];
+            NSLog(@"%@ %@", url, [[mediaFiles objectAtIndex:index] objectForKey:kWebUrl]);
             [self addVideoMessageWithURL:url author:author timestamp:timestamp];
             
         }
     }
 }
 
-- (void)addMediaFileWithFilename: (NSString *)filename key:(NSString *)key sub_key:(NSString *)sub_key {
+- (void)addMediaFileWithURI: (NSString *)uri thumbnail_url:(NSString *)thumbnail_url web_url:(NSString *)web_url {
     NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
     
-    if((filename != nil) && (key != nil)) {
-        [tmpDict setObject:filename forKey:kFilename];
-        [tmpDict setObject:key forKey:kKey];
-        [tmpDict setObject:sub_key forKey:kSubKey];
+    if((uri != nil) && (web_url != nil)) {
+        [tmpDict setObject:uri forKey:kURI];
+        [tmpDict setObject:thumbnail_url forKey:kThumbmail];
+        [tmpDict setObject:web_url forKey:kWebUrl];
         [mediaFiles addObject:tmpDict];
     }
 }

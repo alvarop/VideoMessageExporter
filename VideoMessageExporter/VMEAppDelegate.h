@@ -18,6 +18,6 @@
 - (IBAction)refreshFiles:(id)sender;
 - (IBAction)selecPathButton:(id)sender;
 - (void)addVideoMessageWithURL: (NSURL *)url author:(NSString *)author timestamp:(NSString *)timestamp;
-- (void)addMediaFileWithFilename: (NSString *)filename key:(NSString *)key sub_key:(NSString *)sub_key;
+- (void)addMediaFileWithURI: (NSString *)uri thumbnail_url:(NSString *)thumbnail_url web_url:(NSString *)web_url;
 - (void)addLocalVideoMessageWithURI: (NSString *)uri author:(NSString *)author timestamp:(NSString *)timestamp;
 @end
