@@ -199,7 +199,7 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
 	int rc;
 	char *errMsg;
     currentPath = path;
-    NSLog(@"%@", path);
+    NSLog(@"Loading %@", path);
 	char *mainDBPath = (char*)[[path stringByAppendingString:@"/main.db"] cStringUsingEncoding:NSUTF8StringEncoding];
 
 	NSLog(@"Opening %s", mainDBPath);
@@ -292,8 +292,8 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
 	
 	for(NSString *username in enumerator) {
 		currentUsername = username;
-        NSLog(@"about to load");
-		[self loadMessageInfoFromFile:[files objectForKey:username] showError:(sender == nil)];
+
+        [self loadMessageInfoFromFile:[files objectForKey:username] showError:(sender == nil)];
 	}
 	
 	[_myTableView reloadData];
@@ -320,15 +320,10 @@ static int sqlite_callback_media_documents(void *caller, int argc, char **argv, 
 - (void)addLocalVideoMessageWithURI: (NSString *)uri author:(NSString *)author timestamp:(NSString *)timestamp{
     NSLog(@"Looking for %@", uri);
     
-    // Because there's a 'u' in front of https...
-//    uri = [@"u" stringByAppendingString:uri];
     for (uint32_t index =0; index < [mediaFiles count]; index++){
         
         if([[[mediaFiles objectAtIndex:index] objectForKey:kURI] isEqualToString: uri]) {
-            NSLog(@"MATCH!!!");
-            NSLog(@"%@ %@", [[mediaFiles objectAtIndex:index] objectForKey:kURI], uri);
             NSURL *url = [NSURL URLWithString:[[mediaFiles objectAtIndex:index] objectForKey:kWebUrl]];
-            NSLog(@"%@ %@", url, [[mediaFiles objectAtIndex:index] objectForKey:kWebUrl]);
             [self addVideoMessageWithURL:url author:author timestamp:timestamp];
             
         }
